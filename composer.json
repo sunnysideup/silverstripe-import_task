@@ -1,0 +1,22 @@
+{
+    "name": "sunnysideup/import_task",
+    "type": "silverstripe-module",
+    "description": "An abstract class for writing import tasks.",
+    "keywords": ["Task", "Build Task", "Import", "Data", "Migration"],
+    "license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+    "authors":[
+        {
+            "name": "Nicolaas Francken",
+            "homepage": "https://github.com/sunnysideup",
+            "email" : "modules@sunnysideup.co.nz",
+            "role" : "lead developer"
+        }
+    ],
+    "require":{
+        "silverstripe/framework": "^3.4"
+    },
+    "extra": {
+        "installer-name": "import_task"
+    }
+
+}
