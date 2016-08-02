@@ -2,7 +2,7 @@
 
 
 /**
- * allows the creation of stockists from a CSV
+ * allows the creation of records from a CSV
  * data should be formatted in CSV like this:
  *
  * NAME (name of stockist)
