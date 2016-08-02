@@ -5,7 +5,7 @@
  * allows the creation of records from a CSV
  * data should be formatted in CSV like this:
  *
- * NAME (name of stockist)
+ * NAME (name of )
  * COUNTRY - New Zealand
  * COUNTRYCODE - e.g. NZ, AU, US
  * TYPE (retailler / agent)
@@ -14,9 +14,6 @@
  * EMAIL
  * PHONE e.g. +31 33323321
  * ADDRESS
- * PHYSICAL (YES / NO)
- * ONLINE (YES / NO)
-
  */
 
 abstract class ImportTaskBasics extends BuildTask {
