@@ -14,6 +14,8 @@
  * EMAIL
  * PHONE e.g. +31 33323321
  * ADDRESS
+ * 
+ * you can use ANY fields you like... this is just an example
  */
 
 abstract class ImportTaskBasics extends BuildTask {
