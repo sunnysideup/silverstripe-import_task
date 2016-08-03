@@ -55,6 +55,13 @@ abstract class ImportTaskBasics extends BuildTask {
      */
     protected $debug = true;
 
+    /**
+     * @var array
+     */
+    protected static $characters_to_replace = array(
+        '’' => '\''
+    );
+
 
     /**
      * the original data from the CVS
@@ -123,11 +130,17 @@ abstract class ImportTaskBasics extends BuildTask {
         $rows = array();
         $fileLocation = Director::baseFolder()."/".$this->fileLocation;
         $this->outputToScreen("reading file $fileLocation", "deleted");
+        $replaceFromChars = array_keys($this->Config()->get('characters_to_replace'));
+        $replaceToChars = array_values($this->Config()->get('characters_to_replace'));
+
         if (($handle = fopen($fileLocation, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 100000, $this->csvSeparator)) !== FALSE) {
                 $cleanArray = array();
                 foreach($data as $key => $value) {
+
+                    $value = str_replace($replaceFromChars, $replaceToChars, $value);
                     $cleanArray[trim($key)] = trim($value);
+
                 }
                 $rows[] = $cleanArray;
                 $rowCount++;
