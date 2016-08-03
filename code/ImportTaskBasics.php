@@ -2,10 +2,10 @@
 
 
 /**
- * allows the creation of stockists from a CSV
+ * allows the creation of records from a CSV
  * data should be formatted in CSV like this:
  *
- * NAME (name of stockist)
+ * NAME (name of )
  * COUNTRY - New Zealand
  * COUNTRYCODE - e.g. NZ, AU, US
  * TYPE (retailler / agent)
@@ -14,9 +14,8 @@
  * EMAIL
  * PHONE e.g. +31 33323321
  * ADDRESS
- * PHYSICAL (YES / NO)
- * ONLINE (YES / NO)
-
+ * 
+ * you can use ANY fields you like... this is just an example
  */
 
 abstract class ImportTaskBasics extends BuildTask {
@@ -54,6 +53,13 @@ abstract class ImportTaskBasics extends BuildTask {
      * @var Boolean
      */
     protected $debug = true;
+
+    /**
+     * @var array
+     */
+    protected static $characters_to_replace = array(
+        '’' => '\''
+    );
 
 
     /**
@@ -123,11 +129,17 @@ abstract class ImportTaskBasics extends BuildTask {
         $rows = array();
         $fileLocation = Director::baseFolder()."/".$this->fileLocation;
         $this->outputToScreen("reading file $fileLocation", "deleted");
+        $replaceFromChars = array_keys($this->Config()->get('characters_to_replace'));
+        $replaceToChars = array_values($this->Config()->get('characters_to_replace'));
+
         if (($handle = fopen($fileLocation, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 100000, $this->csvSeparator)) !== FALSE) {
                 $cleanArray = array();
                 foreach($data as $key => $value) {
+
+                    $value = str_replace($replaceFromChars, $replaceToChars, $value);
                     $cleanArray[trim($key)] = trim($value);
+
                 }
                 $rows[] = $cleanArray;
                 $rowCount++;
