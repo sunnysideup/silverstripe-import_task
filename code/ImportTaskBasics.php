@@ -87,8 +87,8 @@ abstract class ImportTaskBasics extends BuildTask {
      */
     public function run($request){
 
-        increase_time_limit_to(3600);
-        set_time_limit(3600);
+        increase_time_limit_to(86400);
+        set_time_limit(86400);
         increase_memory_limit_to('1024M');
         if(isset($_GET["resetonly"])) {
             //do nothing
