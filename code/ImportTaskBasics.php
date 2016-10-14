@@ -119,7 +119,7 @@ abstract class ImportTaskBasics extends BuildTask {
     protected function readFile(){
         $this->outputToScreen("
             ================================================
-            READING FILE ".ini_get('max_execution_time')."seconds available. ".(ini_get('memory_limit'))."MB available
+            READING FILE ".ini_get('max_execution_time')." seconds available. ".(ini_get('memory_limit'))."MB available
             ================================================");
         if(!$this->fileLocation) {
             $this->outputToScreen("There is no file to import", "deleted");
@@ -127,7 +127,13 @@ abstract class ImportTaskBasics extends BuildTask {
         }
         $rowCount = 1;
         $rows = array();
-        $fileLocation = Director::baseFolder()."/".$this->fileLocation;
+
+        if (strpos ($this->fileLocation, Director::baseFolder()) === false)  {
+            $fileLocation = Director::baseFolder()."/".$this->fileLocation;
+        }
+        else {
+            $fileLocation = $this->fileLocation;
+        }
         $this->outputToScreen("reading file <strong>$fileLocation </strong>", "altered");
         $replaceFromChars = array_keys($this->Config()->get('characters_to_replace'));
         $replaceToChars = array_values($this->Config()->get('characters_to_replace'));
