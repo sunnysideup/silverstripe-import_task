@@ -20,6 +20,7 @@
 
 abstract class ImportTaskBasics extends BuildTask {
 
+
     protected $title = "Extend this class";
 
     protected $description = "
@@ -208,6 +209,20 @@ abstract class ImportTaskBasics extends BuildTask {
             '<h3>'.$this->getTitle().': <a href="'.$link.'">'.
             ($reset ? 'reset' : '').' '.($reset && $run ? 'AND' : '').' '.($run ? 'run' : '').($action ? ' - '.$action : '').
             '</a></h3>';
+    }
+
+    /**
+     *
+     *
+     * @param  string $message
+     * @param  string $type
+     */
+    protected function DebugOutput($message, $type = "")
+    {
+            if (!$this->debug) return;
+            echo " ";
+            flush(); ob_end_flush(); DB::alteration_message($message, $type); ob_start();
+            echo " ";flush(); ob_end_flush();ob_start();
     }
 
 }
