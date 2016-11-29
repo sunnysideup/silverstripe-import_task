@@ -18,9 +18,8 @@
  * you can use ANY fields you like... this is just an example
  */
 
-abstract class ImportTaskBasics extends BuildTask {
-
-
+abstract class ImportTaskBasics extends BuildTask
+{
     protected $title = "Extend this class";
 
     protected $description = "
@@ -69,15 +68,17 @@ abstract class ImportTaskBasics extends BuildTask {
      */
     protected $csv = array();
 
-    function getDescription(){
+    public function getDescription()
+    {
         return $this->description .'<br /> The file to be used is: <strong>'.$this->fileLocation.'</strong>';
     }
 
-    public function RunFromCode($reset, $run) {
-        if($reset) {
+    public function RunFromCode($reset, $run)
+    {
+        if ($reset) {
             $_GET["reset"] = 1;
         }
-        if($run) {
+        if ($run) {
             $_GET["run"] = 1;
         }
         $this->run(null);
@@ -86,23 +87,22 @@ abstract class ImportTaskBasics extends BuildTask {
     /**
      *
      */
-    public function run($request){
-
+    public function run($request)
+    {
         increase_time_limit_to(86400);
         set_time_limit(86400);
         increase_memory_limit_to('1024M');
-        if(isset($_GET["resetonly"])) {
+        if (isset($_GET["resetonly"])) {
             //do nothing
-        }
-        else {
+        } else {
             $this->readFile();
         }
 
-        if(isset($_GET["reset"]) && $_GET["reset"] == 1) {
+        if (isset($_GET["reset"]) && $_GET["reset"] == 1) {
             $this->deleteRecords();
         }
 
-        if(isset($_GET["run"]) && $_GET["run"] == 1) {
+        if (isset($_GET["run"]) && $_GET["run"] == 1) {
             $this->createRecords();
         }
         $resetLink =  $this->Link(null, false, true);
@@ -117,36 +117,34 @@ abstract class ImportTaskBasics extends BuildTask {
         $this->outputToScreen("================================================");
     }
 
-    protected function readFile(){
+    protected function readFile()
+    {
         $this->outputToScreen("
             ================================================
             READING FILE ".ini_get('max_execution_time')." seconds available. ".(ini_get('memory_limit'))."MB available
             ================================================");
-        if(!$this->fileLocation) {
+        if (!$this->fileLocation) {
             $this->outputToScreen("There is no file to import", "deleted");
             return;
         }
         $rowCount = 1;
         $rows = array();
 
-        if (strpos ($this->fileLocation, Director::baseFolder()) === false)  {
+        if (strpos($this->fileLocation, Director::baseFolder()) === false) {
             $fileLocation = Director::baseFolder()."/".$this->fileLocation;
-        }
-        else {
+        } else {
             $fileLocation = $this->fileLocation;
         }
         $this->outputToScreen("reading file <strong>$fileLocation </strong>", "altered");
         $replaceFromChars = array_keys($this->Config()->get('characters_to_replace'));
         $replaceToChars = array_values($this->Config()->get('characters_to_replace'));
 
-        if (($handle = fopen($fileLocation, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 100000, $this->csvSeparator)) !== FALSE) {
+        if (($handle = fopen($fileLocation, "r")) !== false) {
+            while (($data = fgetcsv($handle, 100000, $this->csvSeparator)) !== false) {
                 $cleanArray = array();
-                foreach($data as $key => $value) {
-
+                foreach ($data as $key => $value) {
                     $value = str_replace($replaceFromChars, $replaceToChars, $value);
                     $cleanArray[trim($key)] = trim($value);
-
                 }
                 $rows[] = $cleanArray;
                 $rowCount++;
@@ -160,7 +158,7 @@ abstract class ImportTaskBasics extends BuildTask {
         $this->csv = array();
         $rowCount = 1;
         foreach ($rows as $row) {
-            if(count($header) != count($row)) {
+            if (count($header) != count($row)) {
                 $this->outputToScreen("I am trying to merge ".implode(", ", $header)." with ".implode(", ", $row)." but the column count does not match!", "deleted");
                 die("STOPPED");
             }
@@ -170,7 +168,6 @@ abstract class ImportTaskBasics extends BuildTask {
         $this->outputToScreen("Imported ".count($this->csv)." rows with ".count($header)." cells each");
         $this->outputToScreen("Fields are: ".implode(", ", $header));
         $this->outputToScreen("================================================");
-
     }
 
 
@@ -194,11 +191,15 @@ abstract class ImportTaskBasics extends BuildTask {
      */
     protected function outputToScreen($message, $type = "")
     {
-            echo " ";
-            flush(); ob_end_flush(); DB::alteration_message($message, $type); ob_start();
+        echo " ";
+        flush();
+        ob_end_flush();
+        DB::alteration_message($message, $type);
+        ob_start();
     }
 
-    public function Link($action = null, $run = false, $reset = false) {
+    public function Link($action = null, $run = false, $reset = false)
+    {
         $link =
             "/dev/tasks/".
             $this->class.'/'.
@@ -219,10 +220,17 @@ abstract class ImportTaskBasics extends BuildTask {
      */
     protected function DebugOutput($message, $type = "")
     {
-            if (!$this->debug) return;
-            echo " ";
-            flush(); ob_end_flush(); DB::alteration_message($message, $type); ob_start();
-            echo " ";flush(); ob_end_flush();ob_start();
+        if (!$this->debug) {
+            return;
+        }
+        echo " ";
+        flush();
+        ob_end_flush();
+        DB::alteration_message($message, $type);
+        ob_start();
+        echo " ";
+        flush();
+        ob_end_flush();
+        ob_start();
     }
-
 }

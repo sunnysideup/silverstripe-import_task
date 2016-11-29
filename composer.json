@@ -3,6 +3,9 @@
     "type": "silverstripe-module",
     "description": "An abstract class for writing import tasks.",
     "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
         "Task",
         "Build Task",
         "Import",
@@ -18,7 +21,8 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^3.4"
+        "silverstripe/framework": "~3.1",
+        "silverstripe/cms": "~3.1"
     },
     "extra": {
         "installer-name": "import_task"
