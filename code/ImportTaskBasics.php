@@ -191,11 +191,15 @@ abstract class ImportTaskBasics extends BuildTask
      */
     protected function outputToScreen($message, $type = "")
     {
-        echo " ";
-        flush();
-        ob_end_flush();
+        if(! Director::is_cli()) {
+            echo " ";
+            flush();
+            ob_end_flush();
+        }
         DB::alteration_message($message, $type);
-        ob_start();
+        if(! Director::is_cli()) {
+            ob_start();
+        }
     }
 
     public function Link($action = null, $run = false, $reset = false)
@@ -223,14 +227,18 @@ abstract class ImportTaskBasics extends BuildTask
         if (!$this->debug) {
             return;
         }
-        echo " ";
-        flush();
-        ob_end_flush();
+        if(! Director::is_cli()) {
+            echo " ";
+            flush();
+            ob_end_flush();
+        }
         DB::alteration_message($message, $type);
-        ob_start();
-        echo " ";
-        flush();
-        ob_end_flush();
-        ob_start();
+        if(! Director::is_cli()) {
+            ob_start();
+            echo " ";
+            flush();
+            ob_end_flush();
+            ob_start();
+        }
     }
 }
